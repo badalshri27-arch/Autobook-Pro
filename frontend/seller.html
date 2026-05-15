@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    AutoBook Pro Seller
+  </title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#020617;
+  color:white;
+}
+
+.layout{
+  display:flex;
+}
+
+.sidebar{
+  width:260px;
+  min-height:100vh;
+  background:#0f172a;
+  border-right:1px solid #1e293b;
+  padding:25px;
+}
+
+.logo{
+  font-size:32px;
+  font-weight:700;
+  margin-bottom:40px;
+}
+
+.logo span{
+  color:#2563eb;
+}
+
+.menu{
+  list-style:none;
+}
+
+.menu li{
+  background:#1e293b;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:15px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.menu li:hover{
+  background:#2563eb;
+}
+
+.main{
+  flex:1;
+  padding:30px;
+}
+
+.page{
+  display:none;
+}
+
+.active-page{
+  display:block;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.topbar h2{
+  font-size:38px;
+}
+
+.topbar p{
+  color:#94a3b8;
+  margin-top:5px;
+}
+
+.logout-btn{
+  background:#dc2626;
+  border:none;
+  color:white;
+  padding:14px 20px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.card{
+  background:#0f172a;
+  border:1px solid #1e293b;
+  border-radius:20px;
+  padding:30px;
+}
+
+.card h3{
+  color:#94a3b8;
+  margin-bottom:15px;
+}
+
+.card h1{
+  font-size:50px;
+}
+
+.box{
+  margin-top:30px;
+  background:#0f172a;
+  border:1px solid #1e293b;
+  border-radius:20px;
+  padding:25px;
+}
+
+.box h2{
+  margin-bottom:20px;
+}
+
+.form-box{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.form-box input{
+  flex:1;
+  min-width:220px;
+  background:#1e293b;
+  border:none;
+  outline:none;
+  color:white;
+  padding:15px;
+  border-radius:12px;
+}
+
+.create-btn{
+  background:#2563eb;
+  border:none;
+  color:white;
+  padding:15px 22px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th{
+  text-align:left;
+  padding:16px;
+  background:#1e293b;
+}
+
+td{
+  padding:18px 16px;
+  border-top:1px solid #1e293b;
+}
+
+.active{
+  background:#052e16;
+  color:#22c55e;
+  padding:8px 14px;
+  border-radius:30px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.delete-btn{
+  background:#dc2626;
+  border:none;
+  color:white;
+  padding:10px 15px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.upload-box{
+  border:2px dashed #334155;
+  padding:40px;
+  text-align:center;
+  border-radius:20px;
+}
+
+.upload-box input{
+  margin-top:20px;
+}
+
+@media(max-width:900px){
+
+  .layout{
+    flex-direction:column;
+  }
+
+  .sidebar{
+    width:100%;
+    min-height:auto;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+}
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+
+  <div class="sidebar">
+
+    <div class="logo">
+      AutoBook <span>Pro</span>
+    </div>
+
+    <ul class="menu">
+
+      <li onclick="showPage('dashboard')">
+        Dashboard
+      </li>
+
+      <li onclick="showPage('license')">
+        Licenses
+      </li>
+
+      <li onclick="showPage('booking')">
+        Bookings
+      </li>
+
+    </ul>
+
+  </div>
+
+  <!-- MAIN -->
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+
+    <div
+      id="dashboard"
+      class="page active-page"
+    >
+
+      <div class="topbar">
+
+        <div>
+
+          <h2>
+            Seller Dashboard
+          </h2>
+
+          <p>
+            Manage licenses and bookings
+          </p>
+
+        </div>
+
+        <button class="logout-btn">
+          Logout
+        </button>
+
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>Total Licenses</h3>
+          <h1 id="totalLicense">
+            0
+          </h1>
+        </div>
+
+        <div class="card">
+          <h3>Bookings</h3>
+          <h1 id="totalBooking">
+            0
+          </h1>
+        </div>
+
+        <div class="card">
+          <h3>Status</h3>
+          <h1>
+            Active
+          </h1>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- LICENSE -->
+
+    <div
+      id="license"
+      class="page"
+    >
+
+      <div class="topbar">
+
+        <div>
+
+          <h2>
+            Licenses
+          </h2>
+
+          <p>
+            Create and manage licenses
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="box">
+
+        <h2>
+          Create License
+        </h2>
+
+        <div class="form-box">
+
+          <input
+            type="text"
+            id="licenseKey"
+            placeholder="License Key"
+          >
+
+          <input
+            type="text"
+            id="licenseUser"
+            placeholder="User Name"
+          >
+
+          <button
+            class="create-btn"
+            onclick="createLicense()"
+          >
+            Create
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="box">
+
+        <h2>
+          License List
+        </h2>
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>License</th>
+
+              <th>Status</th>
+
+              <th>Action</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="licenseTable">
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+    <!-- BOOKINGS -->
+
+    <div
+      id="booking"
+      class="page"
+    >
+
+      <div class="topbar">
+
+        <div>
+
+          <h2>
+  Live Booking Reports
+</h2>
+
+          <p>
+            Auto loaded from extension
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="box">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>User</th>
+
+              <th>Train</th>
+
+              <th>PNR</th>
+
+              <th>Amount</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="bookingTable">
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+function showPage(page){
+
+  const pages =
+  document.querySelectorAll('.page')
+
+  pages.forEach((item)=>{
+    item.classList.remove('active-page')
+  })
+
+  document
+  .getElementById(page)
+  .classList.add('active-page')
+
+}
+
+// CREATE LICENSE
+
+async function createLicense(){
+
+  const key =
+  document
+  .getElementById('licenseKey')
+  .value
+  .trim()
+
+  const user =
+  document
+  .getElementById('licenseUser')
+  .value
+  .trim()
+
+  if(
+    key === '' ||
+    user === ''
+  ){
+
+    alert(
+      'All fields required'
+    )
+
+    return
+
+  }
+
+  await fetch(
+
+    'http://localhost:5000/api/license/create',
+
+    {
+
+      method:'POST',
+
+      headers:{
+        'Content-Type':'application/json'
+      },
+
+      body:JSON.stringify({
+
+        licenseKey:key,
+
+        expireAt:'2027-01-01'
+
+      })
+
+    }
+
+  )
+
+  alert(
+    'License Created'
+  )
+
+  loadLicenses()
+
+  document
+  .getElementById('licenseKey')
+  .value=''
+
+  document
+  .getElementById('licenseUser')
+  .value=''
+
+}
+
+// LOAD LICENSES
+
+async function loadLicenses(){
+
+  const response =
+  await fetch(
+    'http://localhost:5000/api/license'
+  )
+
+  const data =
+  await response.json()
+
+  document
+  .getElementById(
+    'totalLicense'
+  )
+  .innerText =
+  data.length
+
+  const table =
+  document
+  .getElementById(
+    'licenseTable'
+  )
+
+  table.innerHTML=''
+
+  data.forEach((item)=>{
+
+    table.innerHTML += `
+
+      <tr>
+
+        <td>
+          ${item.licenseKey}
+        </td>
+
+        <td>
+
+          <span class="${
+  item.status === 'active'
+  ? 'active'
+  : 'expired'
+}">
+  ${item.status}
+</span>
+
+        </td>
+<td>
+
+  <button
+    class="delete-btn"
+    onclick="toggleLicense('${item._id}')"
+  >
+
+    ${item.status === 'active'
+      ? 'Block'
+      : 'Unblock'}
+
+  </button>
+
+</td>
+
+        </td>
+
+      </tr>
+
+    `
+
+  })
+
+}
+async function toggleLicense(id){
+
+  await fetch(
+
+    `http://localhost:5000/api/license/toggle/${id}`,
+
+    {
+
+      method:'PUT'
+
+    }
+
+  )
+
+  loadLicenses()
+
+}
+async function deleteLicense(id){
+
+  const confirmDelete =
+  confirm(
+    'Delete this license ?'
+  )
+
+  if(!confirmDelete){
+
+    return
+
+  }
+
+  await fetch(
+
+    `http://localhost:5000/api/license/${id}`,
+
+    {
+
+      method:'DELETE'
+
+    }
+
+  )
+
+  alert(
+    'License Deleted'
+  )
+
+  loadLicenses()
+
+}
+
+
+// LOAD BOOKINGS
+
+async function loadBookings(){
+
+  const response =
+  await fetch(
+    'http://localhost:5000/api/booking'
+  )
+
+  const data =
+  await response.json()
+
+  document
+  .getElementById(
+    'totalBooking'
+  )
+  .innerText =
+  data.length
+
+  const table =
+  document
+  .getElementById(
+    'bookingTable'
+  )
+
+  table.innerHTML=''
+
+  data.forEach((item)=>{
+
+    table.innerHTML += `
+
+      <tr>
+
+        <td>
+          ${item.userName}
+        </td>
+
+        <td>
+          ${item.trainNumber}
+        </td>
+
+        <td>
+          ${item.pnr}
+        </td>
+
+        <td>
+          ₹${item.amount}
+        </td>
+
+      </tr>
+
+    `
+
+  })
+
+}
+
+// AUTO LOAD
+
+loadLicenses()
+
+loadBookings()
+
+</script>
+
+</body>
+</html>

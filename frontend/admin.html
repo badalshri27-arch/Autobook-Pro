@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>
+    AutoBook Pro Admin
+  </title>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#020617;
+  color:white;
+}
+
+.layout{
+  display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:260px;
+  min-height:100vh;
+  background:#0f172a;
+  padding:25px;
+  border-right:1px solid #1e293b;
+}
+
+.logo{
+  font-size:34px;
+  font-weight:700;
+  margin-bottom:40px;
+}
+
+.logo span{
+  color:#2563eb;
+}
+
+.menu{
+  list-style:none;
+}
+
+.menu li{
+  background:#1e293b;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:16px;
+  cursor:pointer;
+  transition:.3s;
+  font-size:16px;
+  font-weight:500;
+}
+
+.menu li:hover{
+  background:#2563eb;
+  transform:translateX(5px);
+}
+
+/* MAIN */
+
+.main{
+  flex:1;
+  padding:30px;
+}
+
+.page{
+  display:none;
+}
+
+.active-page{
+  display:block;
+}
+
+/* TOPBAR */
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.topbar h2{
+  font-size:38px;
+  font-weight:700;
+}
+
+.topbar p{
+  color:#94a3b8;
+  margin-top:6px;
+}
+
+.logout-btn{
+  background:#dc2626;
+  border:none;
+  color:white;
+  padding:14px 22px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:600;
+}
+
+/* CARDS */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.card{
+  background:#0f172a;
+  border:1px solid #1e293b;
+  border-radius:22px;
+  padding:30px;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  border-color:#2563eb;
+}
+
+.card h3{
+  color:#94a3b8;
+  margin-bottom:16px;
+  font-size:18px;
+}
+
+.card h1{
+  font-size:55px;
+}
+
+/* BOX */
+
+.box{
+  margin-top:30px;
+  background:#0f172a;
+  border:1px solid #1e293b;
+  border-radius:22px;
+  padding:25px;
+}
+
+.box h2{
+  margin-bottom:22px;
+  font-size:32px;
+}
+
+/* FORM */
+
+.form-box{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.form-box input{
+  flex:1;
+  min-width:220px;
+  background:#1e293b;
+  border:1px solid transparent;
+  color:white;
+  padding:16px;
+  border-radius:12px;
+  outline:none;
+  font-size:15px;
+}
+
+.form-box input:focus{
+  border-color:#2563eb;
+}
+
+.create-btn{
+  background:#2563eb;
+  border:none;
+  color:white;
+  padding:16px 24px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:600;
+  transition:.3s;
+}
+
+.create-btn:hover{
+  background:#1d4ed8;
+}
+
+/* TABLE */
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th{
+  text-align:left;
+  padding:18px;
+  background:#1e293b;
+  color:white;
+  font-size:15px;
+}
+
+td{
+  padding:22px 18px;
+  border-top:1px solid #1e293b;
+}
+
+tbody tr:hover{
+  background:#111827;
+}
+
+/* STATUS */
+
+.status{
+  padding:8px 14px;
+  border-radius:30px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.active{
+  background:#052e16;
+  color:#22c55e;
+}
+
+/* DELETE BUTTON */
+
+.delete-btn{
+  background:#dc2626;
+  border:none;
+  color:white;
+  padding:10px 16px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.delete-btn:hover{
+  background:#b91c1c;
+}
+
+/* LICENSE */
+
+.license-card{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .layout{
+    flex-direction:column;
+  }
+
+  .sidebar{
+    width:100%;
+    min-height:auto;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .license-card{
+    grid-template-columns:1fr;
+  }
+
+}
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+
+  <div class="sidebar">
+
+    <div class="logo">
+      AutoBook <span>Pro</span>
+    </div>
+
+    <ul class="menu">
+
+      <li onclick="showPage('dashboard')">
+        Dashboard
+      </li>
+
+      <li onclick="showPage('superseller')">
+        Super Sellers
+      </li>
+
+      <li onclick="showPage('seller')">
+        Sellers
+      </li>
+
+      <li onclick="showPage('license')">
+        Licenses
+      </li>
+
+      <li onclick="showPage('booking')">
+        Bookings
+      </li>
+
+    </ul>
+
+  </div>
+
+  <!-- MAIN -->
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+
+    <div
+      id="dashboard"
+      class="page active-page"
+    >
+
+      <div class="topbar">
+
+        <div>
+          <h2>
+            Admin Dashboard
+          </h2>
+
+          <p>
+            Manage your complete system
+          </p>
+        </div>
+
+        <button class="logout-btn">
+          Logout
+        </button>
+
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>Total Super Sellers</h3>
+          <h1>10</h1>
+        </div>
+
+        <div class="card">
+          <h3>Total Sellers</h3>
+          <h1>45</h1>
+        </div>
+
+        <div class="card">
+          <h3>Total Licenses</h3>
+          <h1>240</h1>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SUPER SELLERS -->
+
+    <div
+      id="superseller"
+      class="page"
+    >
+
+      <div class="topbar">
+
+        <div>
+          <h2>
+            Super Sellers
+          </h2>
+
+          <p>
+            Create and manage super sellers
+          </p>
+        </div>
+
+      </div>
+
+      <div class="box">
+
+        <h2>
+          Create Super Seller
+        </h2>
+
+        <div class="form-box">
+
+          <input
+            type="text"
+            id="name"
+            placeholder="Enter Name"
+          >
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter Email"
+          >
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter Password"
+          >
+
+          <button
+            class="create-btn"
+            onclick="createSuperSeller()"
+          >
+            Create
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="box">
+
+        <h2>
+          Super Seller List
+        </h2>
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Name</th>
+
+              <th>Email</th>
+
+              <th>Status</th>
+
+              <th>Action</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="superSellerTable">
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+    <!-- SELLERS -->
+
+    <div
+      id="seller"
+      class="page"
+    >
+
+      <div class="topbar">
+
+        <div>
+          <h2>
+            Sellers
+          </h2>
+
+          <p>
+            Manage all sellers
+          </p>
+        </div>
+
+      </div>
+
+      <div class="box">
+
+        <table>
+
+          <tr>
+
+            <th>Name</th>
+
+            <th>Status</th>
+
+          </tr>
+
+          <tr>
+
+            <td>Seller One</td>
+
+            <td>
+
+              <span class="status active">
+                Active
+              </span>
+
+            </td>
+
+          </tr>
+
+        </table>
+
+      </div>
+
+    </div>
+
+    <!-- LICENSE -->
+
+    <div
+      id="license"
+      class="page"
+    >
+
+      <div class="topbar">
+
+        <div>
+          <h2>
+            Licenses
+          </h2>
+
+          <p>
+            Manage all licenses
+          </p>
+        </div>
+
+      </div>
+
+      <div class="license-card">
+
+        <div class="box">
+
+          <h2>
+            Active Licenses
+          </h2>
+
+          <h1>
+            220
+          </h1>
+
+        </div>
+
+        <div class="box">
+
+          <h2>
+            Blocked Licenses
+          </h2>
+
+          <h1>
+            20
+          </h1>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BOOKINGS -->
+
+    <div
+      id="booking"
+      class="page"
+    >
+
+      <div class="topbar">
+
+        <div>
+          <h2>
+            Bookings
+          </h2>
+
+          <p>
+            Booking screenshots and data
+          </p>
+        </div>
+
+      </div>
+
+      <div class="box">
+
+        <table>
+
+          <tr>
+
+            <th>User</th>
+
+            <th>PNR</th>
+
+            <th>Status</th>
+
+          </tr>
+
+          <tr>
+
+            <td>Aditya</td>
+
+            <td>2345678912</td>
+
+            <td>
+
+              <span class="status active">
+                Completed
+              </span>
+
+            </td>
+
+          </tr>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+function showPage(page){
+
+  const pages =
+  document.querySelectorAll('.page')
+
+  pages.forEach((item)=>{
+    item.classList.remove('active-page')
+  })
+
+  document
+  .getElementById(page)
+  .classList.add('active-page')
+
+}
+
+function createSuperSeller(){
+
+  const name =
+  document
+  .getElementById('name')
+  .value
+  .trim()
+
+  const email =
+  document
+  .getElementById('email')
+  .value
+  .trim()
+
+  const password =
+  document
+  .getElementById('password')
+  .value
+  .trim()
+
+  // VALIDATION
+
+  if(
+    name === '' ||
+    email === '' ||
+    password === ''
+  ){
+
+    alert(
+      'All fields required'
+    )
+
+    return
+  }
+
+  // EMAIL CHECK
+
+  if(
+    !email.includes('@')
+  ){
+
+    alert(
+      'Invalid Email'
+    )
+
+    return
+  }
+
+  // PASSWORD CHECK
+
+  if(
+    password.length < 6
+  ){
+
+    alert(
+      'Password minimum 6 characters'
+    )
+
+    return
+  }
+
+  // TABLE
+
+  const table =
+  document
+  .getElementById(
+    'superSellerTable'
+  )
+
+  table.innerHTML += `
+
+    <tr>
+
+      <td>
+        ${name}
+      </td>
+
+      <td>
+        ${email}
+      </td>
+
+      <td>
+
+        <span class="status active">
+          Active
+        </span>
+
+      </td>
+
+      <td>
+
+        <button
+          class="delete-btn"
+          onclick="deleteRow(this)"
+        >
+          Delete
+        </button>
+
+      </td>
+
+    </tr>
+
+  `
+
+  // CLEAR
+
+  document
+  .getElementById('name')
+  .value = ''
+
+  document
+  .getElementById('email')
+  .value = ''
+
+  document
+  .getElementById('password')
+  .value = ''
+
+  alert(
+    'Super Seller Created'
+  )
+
+}
+
+function deleteRow(button){
+
+  button
+  .parentElement
+  .parentElement
+  .remove()
+
+}
+
+</script>
+
+</body>
+</html>

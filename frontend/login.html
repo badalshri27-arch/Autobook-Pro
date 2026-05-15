@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>
+    Autobook Pro Login
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+</head>
+<body>
+
+  <div class="login-box">
+
+    <h1>
+      AutoBook <span>Pro</span>
+    </h1>
+
+    <input
+      type="email"
+      id="email"
+      placeholder="Enter Email"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Enter Password"
+    >
+
+    <select id="role">
+
+      <option value="super_admin">
+        Super Admin
+      </option>
+
+      <option value="super_seller">
+        Super Seller
+      </option>
+
+      <option value="seller">
+        Seller
+      </option>
+
+    </select>
+
+    <button onclick="login()">
+      Login
+    </button>
+
+  </div>
+
+  <script src="login.js"></script>
+
+</body>
+</html>
