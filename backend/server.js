@@ -9,7 +9,6 @@ const licenseRoutes = require("./routes/licenseRoutes")
 const bookingRoutes = require("./routes/bookingRoutes")
 const sellerRoutes = require("./routes/sellerRoutes")
 const superSellerRoutes = require("./routes/superSellerRoutes")
-
 const Admin = require("./models/Admin")
 
 const app = express()
@@ -20,17 +19,10 @@ app.use(express.json())
 mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
     console.log("MongoDB Connected")
-
-    // AUTO CREATE ADMIN FROM .env
     try {
-      const existing = await Admin.findOne({
-        email: process.env.ADMIN_EMAIL
-      })
-
+      const existing = await Admin.findOne({ email: process.env.ADMIN_EMAIL })
       if (!existing) {
-        const hashed = await bcrypt.hash(
-          process.env.ADMIN_PASSWORD, 10
-        )
+        const hashed = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10)
         await Admin.create({
           name: process.env.ADMIN_NAME,
           email: process.env.ADMIN_EMAIL,
@@ -41,9 +33,8 @@ mongoose.connect(process.env.MONGO_URI)
         console.log("✅ Admin Already Exists")
       }
     } catch (err) {
-      console.log("Admin Create Error:", err.message)
+      console.log("Admin Error:", err.message)
     }
-
   })
   .catch((err) => console.log("MongoDB Error:", err))
 

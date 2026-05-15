@@ -79,10 +79,16 @@ exports.loginSeller = async (req, res) => {
 exports.getSellerStats = async (req, res) => {
   try {
     const { id } = req.params
+    const seller = await Seller.findById(id).select("-password")
     const licenses = await License.find({ createdBy: id })
     const bookings = await Booking.find({ sellerId: id })
+    const paidKeys = licenses.filter(l => l.paymentStatus === "paid").length
+    const unpaidKeys = licenses.filter(l => l.paymentStatus === "unpaid").length
     res.json({
+      credits: seller.credits,
       totalLicenses: licenses.length,
+      paidKeys,
+      unpaidKeys,
       totalBookings: bookings.length,
       revenue: bookings.reduce((a, b) => a + (b.amount || 0), 0)
     })

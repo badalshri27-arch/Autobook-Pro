@@ -6,7 +6,9 @@ exports.createLicense = async (req, res) => {
     const existing = await License.findOne({ licenseKey })
     if (existing) return res.status(400).json({ error: "Key already exists" })
     const license = await License.create({
-      licenseKey, expireAt, createdBy: sellerId
+      licenseKey, expireAt: expireAt || null,
+      createdBy: sellerId,
+      paymentStatus: "unpaid"
     })
     res.json({ success: true, license })
   } catch (err) {
@@ -36,8 +38,12 @@ exports.verifyLicense = async (req, res) => {
   try {
     const { licenseKey } = req.body
     const license = await License.findOne({ licenseKey }).populate("createdBy")
-    if (!license) return res.status(404).json({ valid: false, error: "Invalid key" })
-    if (license.status !== "active") return res.status(403).json({ valid: false, error: "Key blocked" })
+    if (!license)
+      return res.status(404).json({ valid: false, error: "Invalid key" })
+    if (license.status !== "active")
+      return res.status(403).json({ valid: false, error: "Key blocked by seller" })
+    if (license.paymentStatus !== "paid")
+      return res.status(403).json({ valid: false, error: "Key unpaid. Contact your seller." })
     if (license.expireAt && new Date() > new Date(license.expireAt))
       return res.status(403).json({ valid: false, error: "Key expired" })
     res.json({
