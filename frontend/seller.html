@@ -516,7 +516,7 @@ async function createLicense(){
 
   await fetch(
 
-    'http://localhost:5000/api/license/create',
+    'https://autobook-pro.onrender.com/api/license/create',
 
     {
 
@@ -560,22 +560,14 @@ async function loadLicenses(){
 
   const response =
   await fetch(
-    'http://localhost:5000/api/license'
+    'https://autobook-pro.onrender.com/api/license'
   )
 
   const data =
   await response.json()
 
-  document
-  .getElementById(
-    'totalLicense'
-  )
-  .innerText =
-  data.length
-
   const table =
-  document
-  .getElementById(
+  document.getElementById(
     'licenseTable'
   )
 
@@ -587,35 +579,48 @@ async function loadLicenses(){
 
       <tr>
 
-        <td>
-          ${item.licenseKey}
-        </td>
+        <td>${item.licenseKey}</td>
 
         <td>
 
           <span class="${
-  item.status === 'active'
-  ? 'active'
-  : 'expired'
-}">
-  ${item.status}
-</span>
+            item.status === 'active'
+            ? 'active'
+            : 'expired'
+          }">
+
+            ${item.status}
+
+          </span>
 
         </td>
-<td>
 
-  <button
-    class="delete-btn"
-    onclick="toggleLicense('${item._id}')"
-  >
+        <td>
 
-    ${item.status === 'active'
-      ? 'Block'
-      : 'Unblock'}
+          <button
+            class="delete-btn"
+            onclick="toggleLicense(
+              '${item._id}'
+            )"
+          >
 
-  </button>
+            ${
+              item.status === 'active'
+              ? 'Block'
+              : 'Unblock'
+            }
 
-</td>
+          </button>
+
+          <button
+            class="delete-btn"
+            style="margin-left:10px;background:#7f1d1d;"
+            onclick="deleteLicense(
+              '${item._id}'
+            )"
+          >
+            Delete
+          </button>
 
         </td>
 
@@ -630,12 +635,10 @@ async function toggleLicense(id){
 
   await fetch(
 
-    `http://localhost:5000/api/license/toggle/${id}`,
+    `https://autobook-pro.onrender.com/api/license/toggle/${id}`,
 
     {
-
       method:'PUT'
-
     }
 
   )
@@ -643,33 +646,17 @@ async function toggleLicense(id){
   loadLicenses()
 
 }
+
 async function deleteLicense(id){
-
-  const confirmDelete =
-  confirm(
-    'Delete this license ?'
-  )
-
-  if(!confirmDelete){
-
-    return
-
-  }
 
   await fetch(
 
-    `http://localhost:5000/api/license/${id}`,
+    `https://autobook-pro.onrender.com/api/license/${id}`,
 
     {
-
       method:'DELETE'
-
     }
 
-  )
-
-  alert(
-    'License Deleted'
   )
 
   loadLicenses()
@@ -683,7 +670,7 @@ async function loadBookings(){
 
   const response =
   await fetch(
-    'http://localhost:5000/api/booking'
+    'https://autobook-pro.onrender.com/api/booking'
   )
 
   const data =
