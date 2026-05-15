@@ -1,60 +1,197 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-  <title>
-    Autobook Pro Login
-  </title>
-
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoBook Pro — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body {
+  background: #020617;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: radial-gradient(ellipse at 20% 50%, #0f2d6b22 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 20%, #1e3a8a22 0%, transparent 60%);
+}
+.login-wrapper {
+  width: 100%;
+  max-width: 440px;
+  padding: 20px;
+}
+.logo {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.logo span { color: #3b82f6; }
+.tagline {
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 36px;
+}
+.card {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 24px;
+  padding: 36px;
+}
+.role-tabs {
+  display: flex;
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+  gap: 4px;
+}
+.role-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: .2s;
+}
+.role-tab.active {
+  background: #2563eb;
+  color: white;
+}
+.field {
+  margin-bottom: 18px;
+}
+.field label {
+  display: block;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.field input {
+  width: 100%;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  transition: .2s;
+}
+.field input:focus { border-color: #3b82f6; }
+.login-btn {
+  width: 100%;
+  background: #2563eb;
+  border: none;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .2s;
+  margin-top: 6px;
+}
+.login-btn:hover { background: #1d4ed8; }
+.error {
+  background: #450a0a;
+  border: 1px solid #dc2626;
+  color: #fca5a5;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-top: 14px;
+  display: none;
+}
+</style>
 </head>
 <body>
-
-  <div class="login-box">
-
-    <h1>
-      AutoBook <span>Pro</span>
-    </h1>
-
-    <input
-      type="email"
-      id="email"
-      placeholder="Enter Email"
-    >
-
-    <input
-      type="password"
-      id="password"
-      placeholder="Enter Password"
-    >
-
-    <select id="role">
-
-      <option value="super_admin">
-        Super Admin
-      </option>
-
-      <option value="super_seller">
-        Super Seller
-      </option>
-
-      <option value="seller">
-        Seller
-      </option>
-
-    </select>
-
-    <button onclick="login()">
-      Login
-    </button>
-
+<div class="login-wrapper">
+  <div class="logo">AutoBook <span>Pro</span></div>
+  <div class="tagline">Train Booking Automation System</div>
+  <div class="card">
+    <div class="role-tabs">
+      <button class="role-tab active" onclick="setRole('admin')">Admin</button>
+      <button class="role-tab" onclick="setRole('superseller')">Super Seller</button>
+      <button class="role-tab" onclick="setRole('seller')">Seller</button>
+    </div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="Enter your email">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter your password">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="error" id="errorMsg"></div>
   </div>
+</div>
+<script>
+const API = "https://autobook-pro.onrender.com/api"
+let selectedRole = "admin"
 
-  <script src="login.js"></script>
+function setRole(role) {
+  selectedRole = role
+  document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'))
+  event.target.classList.add('active')
+}
 
+async function doLogin() {
+  const email = document.getElementById('email').value.trim()
+  const password = document.getElementById('password').value.trim()
+  const errEl = document.getElementById('errorMsg')
+  errEl.style.display = 'none'
+
+  if (!email || !password) {
+    errEl.textContent = "Please fill all fields"
+    errEl.style.display = 'block'
+    return
+  }
+
+  const endpoints = {
+    admin: `${API}/admin/login`,
+    superseller: `${API}/superseller/login`,
+    seller: `${API}/seller/login`
+  }
+
+  try {
+    const res = await fetch(endpoints[selectedRole], {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+    const data = await res.json()
+    if (!data.success) {
+      errEl.textContent = data.error || "Login failed"
+      errEl.style.display = 'block'
+      return
+    }
+    localStorage.setItem('abp_token', data.token)
+    localStorage.setItem('abp_role', selectedRole)
+    localStorage.setItem('abp_id', data.id)
+    localStorage.setItem('abp_name', data.name)
+
+    const pages = {
+      admin: 'admin.html',
+      superseller: 'superseller.html',
+      seller: 'seller.html'
+    }
+    window.location.href = pages[selectedRole]
+  } catch {
+    errEl.textContent = "Server error. Try again."
+    errEl.style.display = 'block'
+  }
+}
+</script>
 </body>
 </html>

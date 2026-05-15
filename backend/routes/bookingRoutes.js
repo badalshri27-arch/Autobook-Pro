@@ -1,30 +1,10 @@
-const express =
-require('express')
+const express = require("express")
+const router = express.Router()
+const ctrl = require("../controllers/bookingController")
 
-const router =
-express.Router()
-
-const {
-
-  createBooking,
-  getBookings
-
-} = require(
-'../controllers/bookingController'
-)
-
-// CREATE BOOKING
-
-router.post(
-  '/create',
-  createBooking
-)
-
-// GET BOOKINGS
-
-router.get(
-  '/',
-  getBookings
-)
+router.post("/create", ctrl.createBooking)
+router.get("/", ctrl.getAllBookings)
+router.get("/by-seller/:sellerId", ctrl.getBookingsBySeller)
+router.get("/by-superseller/:superSellerId", ctrl.getBookingsBySuperSeller)
 
 module.exports = router

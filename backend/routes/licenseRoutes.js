@@ -1,66 +1,12 @@
-const express =
-require('express')
+const express = require("express")
+const router = express.Router()
+const ctrl = require("../controllers/licenseController")
 
-const router =
-express.Router()
+router.post("/create", ctrl.createLicense)
+router.get("/", ctrl.getAllLicenses)
+router.get("/by-seller/:sellerId", ctrl.getLicensesBySeller)
+router.post("/verify", ctrl.verifyLicense)
+router.put("/toggle/:id", ctrl.toggleLicense)
+router.delete("/:id", ctrl.deleteLicense)
 
-const {
-
-  createLicense,
-  verifyLicense,
-  getLicenses,
-  deleteLicense,
-  toggleLicenseStatus
-
-} = require(
-'../controllers/licenseController'
-)
-
-const {
-  protect
-} = require(
-'../middleware/authMiddleware'
-)
-
-
-// CREATE LICENSE
-
-router.post(
-  '/create',
-  createLicense
-)
-
-
-// VERIFY LICENSE
-
-router.post(
-  '/verify',
-  verifyLicense
-)
-
-
-// GET ALL LICENSES
-
-router.get(
-  '/',
-  getLicenses
-)
-
-
-// DELETE LICENSE
-
-router.delete(
-  '/:id',
-  deleteLicense
-)
-
-
-// BLOCK / UNBLOCK LICENSE
-
-router.put(
-  '/toggle/:id',
-  toggleLicenseStatus
-)
-
-module.exports =
-router
+module.exports = router

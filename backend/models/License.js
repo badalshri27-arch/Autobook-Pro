@@ -1,43 +1,10 @@
 const mongoose = require("mongoose")
 
-const licenseSchema =
-new mongoose.Schema({
+const licenseSchema = new mongoose.Schema({
+  licenseKey: { type: String, required: true, unique: true },
+  status: { type: String, default: "active" },
+  expireAt: { type: Date },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "Seller" }
+}, { timestamps: true })
 
-    licenseKey: {
-        type: String,
-        unique: true
-    },
-
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Admin"
-    },
-
-    deviceId: {
-        type: String,
-        default: null
-    },
-
-    status: {
-        type: String,
-        enum: [
-            "active",
-            "blocked"
-        ],
-        default: "active"
-    },
-
-    expireAt: Date,
-
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-
-})
-
-module.exports =
-mongoose.model(
-    "License",
-    licenseSchema
-)
+module.exports = mongoose.model("License", licenseSchema)

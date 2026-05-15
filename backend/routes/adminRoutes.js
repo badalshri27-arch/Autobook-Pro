@@ -1,30 +1,8 @@
 const express = require("express")
-
-const protect =
-require("../middleware/authMiddleware")
-
-const {
-    createSuperAdmin,
-    loginAdmin,
-    createSuperSeller
-} = require("../controllers/adminController")
-
 const router = express.Router()
+const ctrl = require("../controllers/adminController")
 
-router.post(
-    "/create-super-admin",
-    createSuperAdmin
-)
-
-router.post(
-    "/login",
-    loginAdmin
-)
-
-router.post(
-    "/create-super-seller",
-    protect,
-    createSuperSeller
-)
+router.post("/register", ctrl.registerAdmin)
+router.post("/login", ctrl.loginAdmin)
 
 module.exports = router

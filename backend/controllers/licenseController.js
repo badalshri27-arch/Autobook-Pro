@@ -1,260 +1,71 @@
-const License =
-require('../models/License')
+const License = require("../models/License")
 
-// CREATE LICENSE
-
-const createLicense =
-async(req,res)=>{
-
-  try{
-
-    const{
-      licenseKey,
-      expireAt
-    } = req.body
-
-    const license =
-await License.create({
-
-  licenseKey,
-  expireAt,
-
-  status:'active'
-
-})
-
-    res.json(license)
-
-  }
-
-  catch(error){
-
-    res.status(500)
-    .json({
-      message:error.message
+exports.createLicense = async (req, res) => {
+  try {
+    const { licenseKey, expireAt, sellerId } = req.body
+    const existing = await License.findOne({ licenseKey })
+    if (existing) return res.status(400).json({ error: "Key already exists" })
+    const license = await License.create({
+      licenseKey, expireAt, createdBy: sellerId
     })
-
+    res.json({ success: true, license })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-
 }
 
-// VERIFY LICENSE
+exports.getAllLicenses = async (req, res) => {
+  try {
+    const list = await License.find().populate("createdBy", "name")
+    res.json(list)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
 
-const verifyLicense =
-async(req,res)=>{
+exports.getLicensesBySeller = async (req, res) => {
+  try {
+    const list = await License.find({ createdBy: req.params.sellerId })
+    res.json(list)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
 
-  try{
-
-    const{
-      licenseKey
-    } = req.body
-
-    const checkLicense =
-    await License.findOne({
-      licenseKey
-    })
-
-    if(!checkLicense){
-
-      return res.status(404)
-      .json({
-        message:'Invalid License'
-      })
-
-    }
-
-    if(
-      checkLicense.status !==
-      'active'
-    ){
-
-      return res.status(400)
-      .json({
-        message:'License Blocked'
-      })
-
-    }
-
+exports.verifyLicense = async (req, res) => {
+  try {
+    const { licenseKey } = req.body
+    const license = await License.findOne({ licenseKey }).populate("createdBy")
+    if (!license) return res.status(404).json({ valid: false, error: "Invalid key" })
+    if (license.status !== "active") return res.status(403).json({ valid: false, error: "Key blocked" })
+    if (license.expireAt && new Date() > new Date(license.expireAt))
+      return res.status(403).json({ valid: false, error: "Key expired" })
     res.json({
-
-      message:'License Valid',
-
-      license:checkLicense
-
+      valid: true,
+      sellerId: license.createdBy._id,
+      sellerName: license.createdBy.name
     })
-
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-
-  catch(error){
-
-    res.status(500)
-    .json({
-      message:error.message
-    })
-
-  }
-
 }
 
-// GET LICENSES
-
-const getLicenses =
-async(req,res)=>{
-
-  try{
-
-    const licenses =
-    await License.find()
-
-    res.json(licenses)
-
-  }
-
-  catch(error){
-
-    res.status(500)
-    .json({
-      message:error.message
-    })
-
-  }
-
-}
-const deleteLicense =
-async(req,res)=>{
-
-  try{
-
-    await License.findByIdAndDelete(
-      req.params.id
-    )
-
-    res.json({
-      message:'License Deleted'
-    })
-
-  }
-
-  catch(error){
-
-    res.status(500)
-    .json({
-      message:error.message
-    })
-
-  }
-
-}
-
-const toggleLicenseStatus =
-async(req,res)=>{
-
-  try{
-
-    const license =
-    await License.findById(
-      req.params.id
-    )
-
-    if(!license){
-
-      return res.status(404)
-      .json({
-        message:'License Not Found'
-      })
-
-    }
-
-    if(
-      license.status ===
-      'active'
-    ){
-
-      license.status =
-      'blocked'
-
-    }
-
-    else{
-
-      license.status =
-      'active'
-
-    }
-
+exports.toggleLicense = async (req, res) => {
+  try {
+    const license = await License.findById(req.params.id)
+    license.status = license.status === "active" ? "blocked" : "active"
     await license.save()
-
-    res.json({
-
-      message:'License Updated',
-
-      status:license.status
-
-    })
-
+    res.json({ success: true, status: license.status })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-
-  catch(error){
-
-    res.status(500)
-    .json({
-      message:error.message
-    })
-
-  }
-
 }
 
-const blockLicense =
-async(req,res)=>{
-
-  try{
-
-    const license =
-    await License.findById(
-      req.params.id
-    )
-
-    if(!license){
-
-      return res.status(404)
-      .json({
-        message:'License not found'
-      })
-
-    }
-
-    license.status =
-    license.status === 'active'
-    ? 'blocked'
-    : 'active'
-
-    await license.save()
-
-    res.json({
-      message:'License Updated',
-      status:license.status
-    })
-
+exports.deleteLicense = async (req, res) => {
+  try {
+    await License.findByIdAndDelete(req.params.id)
+    res.json({ success: true })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-
-  catch(error){
-
-    res.status(500)
-    .json({
-      message:error.message
-    })
-
-  }
-
-}
-module.exports = {
-
-  createLicense,
-  verifyLicense,
-  getLicenses,
-  deleteLicense,
-  toggleLicenseStatus,
-  blockLicense
-
 }

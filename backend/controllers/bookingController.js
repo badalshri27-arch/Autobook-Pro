@@ -1,122 +1,53 @@
-const Booking =
-require('../models/Booking')
+const Booking = require("../models/Booking")
+const License = require("../models/License")
+const Seller = require("../models/Seller")
 
-const License =
-require('../models/License')
-
-// CREATE BOOKING
-
-const createBooking =
-async(req,res)=>{
-
-  try{
-
-    const{
-
-      licenseKey,
-      userName,
-      trainNumber,
-      pnr,
-      amount
-
-    } = req.body
-
-    // CHECK LICENSE
-
-    const checkLicense =
-    await License.findOne({
-      licenseKey
+exports.createBooking = async (req, res) => {
+  try {
+    const { userName, trainNumber, pnr, amount, licenseKey } = req.body
+    const license = await License.findOne({ licenseKey })
+    if (!license) return res.status(404).json({ error: "Invalid license" })
+    const seller = await Seller.findById(license.createdBy)
+    if (!seller) return res.status(404).json({ error: "Seller not found" })
+    const booking = await Booking.create({
+      userName, trainNumber, pnr, amount, licenseKey,
+      sellerId: seller._id,
+      superSellerId: seller.createdBy
     })
-
-    if(!checkLicense){
-
-      return res.status(404)
-      .json({
-
-        message:
-        'Invalid License'
-
-      })
-
-    }
-
-    // SAVE BOOKING
-
-    const booking =
-    await Booking.create({
-
-      licenseKey,
-
-      sellerId:
-      checkLicense.createdBy,
-
-      userName,
-
-      trainNumber,
-
-      pnr,
-
-      amount
-
-    })
-
-    res.json({
-
-      message:
-      'Booking Saved',
-
-      booking
-
-    })
-
+    res.json({ success: true, booking })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-
-  catch(error){
-
-    res.status(500)
-    .json({
-
-      message:
-      error.message
-
-    })
-
-  }
-
 }
 
-// GET BOOKINGS
-
-const getBookings =
-async(req,res)=>{
-
-  try{
-
-    const bookings =
-    await Booking.find()
-
-    res.json(bookings)
-
+exports.getAllBookings = async (req, res) => {
+  try {
+    const list = await Booking.find()
+      .populate("sellerId", "name")
+      .populate("superSellerId", "name")
+      .sort({ createdAt: -1 })
+    res.json(list)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-
-  catch(error){
-
-    res.status(500)
-    .json({
-
-      message:
-      error.message
-
-    })
-
-  }
-
 }
 
-module.exports = {
+exports.getBookingsBySeller = async (req, res) => {
+  try {
+    const list = await Booking.find({ sellerId: req.params.sellerId }).sort({ createdAt: -1 })
+    res.json(list)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
 
-  createBooking,
-
-  getBookings
-
+exports.getBookingsBySuperSeller = async (req, res) => {
+  try {
+    const list = await Booking.find({ superSellerId: req.params.superSellerId })
+      .populate("sellerId", "name")
+      .sort({ createdAt: -1 })
+    res.json(list)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 }

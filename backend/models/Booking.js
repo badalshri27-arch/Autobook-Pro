@@ -1,47 +1,13 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 
-const bookingSchema =
-new mongoose.Schema({
+const bookingSchema = new mongoose.Schema({
+  userName: String,
+  trainNumber: String,
+  pnr: String,
+  amount: Number,
+  licenseKey: String,
+  sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "Seller" },
+  superSellerId: { type: mongoose.Schema.Types.ObjectId, ref: "SuperSeller" }
+}, { timestamps: true })
 
-  licenseKey:{
-    type:String,
-    required:true
-  },
-
-  sellerId:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'Admin'
-  },
-
-  userName:{
-    type:String
-  },
-
-  trainNumber:{
-    type:String
-  },
-
-  pnr:{
-    type:String
-  },
-
-  amount:{
-    type:Number
-  },
-
-  screenshot:{
-    type:String
-  },
-
-  bookingTime:{
-    type:Date,
-    default:Date.now
-  }
-
-})
-
-module.exports =
-mongoose.model(
-  'Booking',
-  bookingSchema
-)
+module.exports = mongoose.model("Booking", bookingSchema)

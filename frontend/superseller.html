@@ -1,648 +1,243 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-  <title>
-    AutoBook Pro Super Seller
-  </title>
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
-
-  <style>
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
-
-body{
-  background:#020617;
-  color:white;
-}
-
-.layout{
-  display:flex;
-}
-
-.sidebar{
-  width:260px;
-  min-height:100vh;
-  background:#0f172a;
-  padding:25px;
-  border-right:1px solid #1e293b;
-}
-
-.logo{
-  font-size:32px;
-  font-weight:700;
-  margin-bottom:40px;
-}
-
-.logo span{
-  color:#2563eb;
-}
-
-.menu{
-  list-style:none;
-}
-
-.menu li{
-  background:#1e293b;
-  padding:16px;
-  border-radius:14px;
-  margin-bottom:15px;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.menu li:hover{
-  background:#2563eb;
-}
-
-.main{
-  flex:1;
-  padding:30px;
-}
-
-.page{
-  display:none;
-}
-
-.active-page{
-  display:block;
-}
-
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:30px;
-}
-
-.topbar h2{
-  font-size:38px;
-}
-
-.topbar p{
-  color:#94a3b8;
-  margin-top:5px;
-}
-
-.logout-btn{
-  background:#dc2626;
-  border:none;
-  color:white;
-  padding:14px 20px;
-  border-radius:12px;
-  cursor:pointer;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-}
-
-.card{
-  background:#0f172a;
-  border:1px solid #1e293b;
-  border-radius:20px;
-  padding:30px;
-}
-
-.card h3{
-  color:#94a3b8;
-  margin-bottom:16px;
-}
-
-.card h1{
-  font-size:52px;
-}
-
-.box{
-  margin-top:30px;
-  background:#0f172a;
-  border:1px solid #1e293b;
-  border-radius:20px;
-  padding:25px;
-}
-
-.box h2{
-  margin-bottom:20px;
-}
-
-.form-box{
-  display:flex;
-  gap:15px;
-  flex-wrap:wrap;
-}
-
-.form-box input{
-  flex:1;
-  min-width:220px;
-  background:#1e293b;
-  border:none;
-  outline:none;
-  color:white;
-  padding:15px;
-  border-radius:12px;
-}
-
-.create-btn{
-  background:#2563eb;
-  border:none;
-  color:white;
-  padding:15px 22px;
-  border-radius:12px;
-  cursor:pointer;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
-}
-
-th{
-  text-align:left;
-  padding:16px;
-  background:#1e293b;
-}
-
-td{
-  padding:18px 16px;
-  border-top:1px solid #1e293b;
-}
-
-.status{
-  background:#052e16;
-  color:#22c55e;
-  padding:8px 14px;
-  border-radius:30px;
-  font-size:14px;
-  font-weight:600;
-}
-
-.delete-btn{
-  background:#dc2626;
-  border:none;
-  color:white;
-  padding:10px 15px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-@media(max-width:900px){
-
-  .layout{
-    flex-direction:column;
-  }
-
-  .sidebar{
-    width:100%;
-    min-height:auto;
-  }
-
-  .cards{
-    grid-template-columns:1fr;
-  }
-
-}
-
-  </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoBook Pro — Super Seller</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { background: #020617; color: white; }
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 260px; background: #0a0f1e; border-right: 1px solid #1e293b; padding: 28px 20px; display: flex; flex-direction: column; position: fixed; height: 100vh; overflow-y: auto; }
+.logo { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.logo span { color: #3b82f6; }
+.role-badge { background: #1e3a8a; color: #93c5fd; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 32px; text-transform: uppercase; letter-spacing: 0.5px; }
+.menu-label { color: #334155; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; padding-left: 12px; }
+.menu { list-style: none; margin-bottom: 24px; }
+.menu li { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px; cursor: pointer; color: #64748b; font-size: 14px; font-weight: 500; transition: .2s; margin-bottom: 4px; }
+.menu li:hover { background: #1e293b; color: white; }
+.menu li.active { background: #1e3a8a; color: #93c5fd; }
+.sidebar-footer { margin-top: auto; border-top: 1px solid #1e293b; padding-top: 20px; }
+.user-info { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.avatar { width: 36px; height: 36px; background: #1e3a8a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #93c5fd; }
+.user-name { font-size: 13px; font-weight: 600; }
+.user-role { font-size: 11px; color: #64748b; }
+.logout-btn { width: 100%; background: #1e293b; border: none; color: #94a3b8; padding: 11px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 500; transition: .2s; }
+.logout-btn:hover { background: #dc2626; color: white; }
+.main { flex: 1; margin-left: 260px; padding: 32px; }
+.page { display: none; }
+.page.active-page { display: block; }
+.page-header { margin-bottom: 28px; }
+.page-header h1 { font-size: 28px; font-weight: 700; }
+.page-header p { color: #64748b; font-size: 14px; margin-top: 4px; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
+.stat-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 18px; padding: 24px; transition: .2s; }
+.stat-card:hover { border-color: #2563eb; transform: translateY(-2px); }
+.stat-label { color: #64748b; font-size: 13px; font-weight: 500; margin-bottom: 12px; }
+.stat-value { font-size: 40px; font-weight: 700; }
+.stat-value.blue { color: #3b82f6; }
+.stat-value.green { color: #22c55e; }
+.stat-value.orange { color: #f97316; }
+.box { background: #0f172a; border: 1px solid #1e293b; border-radius: 18px; padding: 24px; margin-bottom: 20px; }
+.box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.box-header h2 { font-size: 18px; font-weight: 600; }
+.form-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.input-field { flex: 1; min-width: 180px; background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px 14px; color: white; font-size: 14px; outline: none; transition: .2s; }
+.input-field:focus { border-color: #3b82f6; }
+.input-field::placeholder { color: #475569; }
+.btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; transition: .2s; }
+.btn-primary { background: #2563eb; color: white; }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-danger { background: #dc2626; color: white; padding: 8px 14px; font-size: 13px; border-radius: 8px; border: none; cursor: pointer; }
+.btn-warn { background: #d97706; color: white; padding: 8px 14px; font-size: 13px; border-radius: 8px; border: none; cursor: pointer; margin-right: 6px; }
+table { width: 100%; border-collapse: collapse; }
+thead th { text-align: left; padding: 12px 14px; background: #1e293b; color: #94a3b8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+thead th:first-child { border-radius: 8px 0 0 8px; }
+thead th:last-child { border-radius: 0 8px 8px 0; }
+tbody td { padding: 16px 14px; border-bottom: 1px solid #1e293b; font-size: 14px; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #0d1526; }
+.badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.badge-active { background: #052e16; color: #22c55e; }
+.badge-blocked { background: #450a0a; color: #fca5a5; }
+.empty-state { text-align: center; padding: 40px; color: #475569; font-size: 14px; }
+@media(max-width: 900px) { .sidebar { position: relative; width: 100%; height: auto; } .main { margin-left: 0; } .layout { flex-direction: column; } .stats-grid { grid-template-columns: 1fr; } }
+</style>
 </head>
-
 <body>
-
 <div class="layout">
-
-  <!-- SIDEBAR -->
-
   <div class="sidebar">
-
-    <div class="logo">
-      AutoBook <span>Pro</span>
-    </div>
-
+    <div class="logo">AutoBook <span>Pro</span></div>
+    <div class="role-badge">Super Seller</div>
+    <div class="menu-label">Main Menu</div>
     <ul class="menu">
-
-      <li onclick="showPage('dashboard')">
-        Dashboard
-      </li>
-
-      <li onclick="showPage('seller')">
-        Sellers
-      </li>
-
-      <li onclick="showPage('license')">
-        Licenses
-      </li>
-
-      <li onclick="showPage('booking')">
-        Bookings
-      </li>
-
+      <li class="active" onclick="showPage('dashboard', this)"><span>📊</span> Dashboard</li>
+      <li onclick="showPage('sellers', this)"><span>🧑‍💼</span> My Sellers</li>
+      <li onclick="showPage('bookings', this)"><span>🎫</span> All Bookings</li>
     </ul>
-
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar" id="avatarLetter">S</div>
+        <div>
+          <div class="user-name" id="ssName">Super Seller</div>
+          <div class="user-role">Super Seller</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+    </div>
   </div>
 
-  <!-- MAIN -->
-
   <div class="main">
-
     <!-- DASHBOARD -->
-
-    <div
-      id="dashboard"
-      class="page active-page"
-    >
-
-      <div class="topbar">
-
-        <div>
-
-          <h2>
-            Super Seller Dashboard
-          </h2>
-
-          <p>
-            Manage sellers and licenses
-          </p>
-
-        </div>
-
-        <button class="logout-btn">
-          Logout
-        </button>
-
+    <div id="dashboard" class="page active-page">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p>Your sellers and bookings overview</p>
       </div>
-
-      <div class="cards">
-
-        <div class="card">
-          <h3>Total Sellers</h3>
-          <h1>14</h1>
-        </div>
-
-        <div class="card">
-          <h3>Total Licenses</h3>
-          <h1>125</h1>
-        </div>
-
-        <div class="card">
-          <h3>Bookings</h3>
-          <h1>41</h1>
-        </div>
-
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">My Sellers</div><div class="stat-value blue" id="statSellers">0</div></div>
+        <div class="stat-card"><div class="stat-label">Total Bookings</div><div class="stat-value green" id="statBookings">0</div></div>
+        <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value orange" id="statRevenue">₹0</div></div>
       </div>
-
     </div>
 
     <!-- SELLERS -->
-
-    <div
-      id="seller"
-      class="page"
-    >
-
-      <div class="topbar">
-
-        <div>
-
-          <h2>
-            Sellers
-          </h2>
-
-          <p>
-            Create and manage sellers
-          </p>
-
-        </div>
-
+    <div id="sellers" class="page">
+      <div class="page-header">
+        <h1>My Sellers</h1>
+        <p>Create and manage your sellers</p>
       </div>
-
       <div class="box">
-
-        <h2>
-          Create Seller
-        </h2>
-
-        <div class="form-box">
-
-          <input
-            type="text"
-            id="sellerName"
-            placeholder="Seller Name"
-          >
-
-          <input
-            type="email"
-            id="sellerEmail"
-            placeholder="Seller Email"
-          >
-
-          <input
-            type="password"
-            id="sellerPassword"
-            placeholder="Password"
-          >
-
-          <button
-            class="create-btn"
-            onclick="createSeller()"
-          >
-            Create
-          </button>
-
+        <div class="box-header"><h2>Create Seller</h2></div>
+        <div class="form-row">
+          <input class="input-field" type="text" id="sel_name" placeholder="Full Name">
+          <input class="input-field" type="email" id="sel_email" placeholder="Email Address">
+          <input class="input-field" type="password" id="sel_password" placeholder="Password">
+          <button class="btn btn-primary" onclick="createSeller()">Create</button>
         </div>
-
       </div>
-
       <div class="box">
-
-        <h2>
-          Seller List
-        </h2>
-
+        <div class="box-header"><h2>Seller List</h2></div>
         <table>
-
-          <thead>
-
-            <tr>
-
-              <th>Name</th>
-
-              <th>Email</th>
-
-              <th>Status</th>
-
-              <th>Action</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody id="sellerTable">
-
-          </tbody>
-
+          <thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="sellerTable"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
         </table>
-
       </div>
-
-    </div>
-
-    <!-- LICENSE -->
-
-    <div
-      id="license"
-      class="page"
-    >
-
-      <div class="topbar">
-
-        <div>
-
-          <h2>
-            Licenses
-          </h2>
-
-          <p>
-            All seller licenses
-          </p>
-
-        </div>
-
-      </div>
-
-      <div class="box">
-
-        <table>
-
-          <tr>
-
-            <th>License</th>
-
-            <th>Status</th>
-
-          </tr>
-
-          <tr>
-
-            <td>ABP-445566</td>
-
-            <td>
-
-              <span class="status">
-                Active
-              </span>
-
-            </td>
-
-          </tr>
-
-        </table>
-
-      </div>
-
     </div>
 
     <!-- BOOKINGS -->
-
-    <div
-      id="booking"
-      class="page"
-    >
-
-      <div class="topbar">
-
-        <div>
-
-          <h2>
-            Bookings
-          </h2>
-
-          <p>
-            View booking screenshots
-          </p>
-
-        </div>
-
+    <div id="bookings" class="page">
+      <div class="page-header">
+        <h1>All Bookings</h1>
+        <p>Bookings from all your sellers</p>
       </div>
-
       <div class="box">
-
         <table>
-
-          <tr>
-
-            <th>User</th>
-
-            <th>PNR</th>
-
-          </tr>
-
-          <tr>
-
-            <td>Aditya</td>
-
-            <td>2345678912</td>
-
-          </tr>
-
+          <thead><tr><th>User</th><th>Train</th><th>PNR</th><th>Amount</th><th>Seller</th><th>Date</th></tr></thead>
+          <tbody id="bookingTable"><tr><td colspan="6" class="empty-state">Loading...</td></tr></tbody>
         </table>
-
       </div>
-
     </div>
-
   </div>
-
 </div>
 
 <script>
+const API = "https://autobook-pro.onrender.com/api"
+const ssId = localStorage.getItem('abp_id')
 
-function showPage(page){
+window.onload = () => {
+  const name = localStorage.getItem('abp_name') || 'Super Seller'
+  document.getElementById('ssName').textContent = name
+  document.getElementById('avatarLetter').textContent = name[0].toUpperCase()
+  loadStats()
+}
 
-  const pages =
-  document.querySelectorAll('.page')
+function showPage(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'))
+  document.querySelectorAll('.menu li').forEach(l => l.classList.remove('active'))
+  document.getElementById(page).classList.add('active-page')
+  el.classList.add('active')
+  if (page === 'dashboard') loadStats()
+  if (page === 'sellers') loadSellers()
+  if (page === 'bookings') loadBookings()
+}
 
-  pages.forEach((item)=>{
-    item.classList.remove('active-page')
+function logout() { localStorage.clear(); window.location.href = 'login.html' }
+
+async function loadStats() {
+  const res = await fetch(`${API}/superseller/stats/${ssId}`)
+  const data = await res.json()
+  document.getElementById('statSellers').textContent = data.totalSellers || 0
+  document.getElementById('statBookings').textContent = data.totalBookings || 0
+  document.getElementById('statRevenue').textContent = '₹' + (data.revenue || 0)
+}
+
+async function createSeller() {
+  const name = document.getElementById('sel_name').value.trim()
+  const email = document.getElementById('sel_email').value.trim()
+  const password = document.getElementById('sel_password').value.trim()
+  if (!name || !email || !password) return alert('All fields required')
+  const res = await fetch(`${API}/seller/create`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, password, superSellerId: ssId })
   })
-
-  document
-  .getElementById(page)
-  .classList.add('active-page')
-
+  const data = await res.json()
+  if (data.success) {
+    alert('Seller Created!')
+    document.getElementById('sel_name').value = ''
+    document.getElementById('sel_email').value = ''
+    document.getElementById('sel_password').value = ''
+    loadSellers()
+  } else { alert(data.error) }
 }
 
-function createSeller(){
-
-  const name =
-  document
-  .getElementById('sellerName')
-  .value
-  .trim()
-
-  const email =
-  document
-  .getElementById('sellerEmail')
-  .value
-  .trim()
-
-  const password =
-  document
-  .getElementById('sellerPassword')
-  .value
-  .trim()
-
-  if(
-    name === '' ||
-    email === '' ||
-    password === ''
-  ){
-
-    alert(
-      'All fields required'
-    )
-
-    return
-  }
-
-  if(!email.includes('@')){
-
-    alert(
-      'Invalid Email'
-    )
-
-    return
-  }
-
-  if(password.length < 6){
-
-    alert(
-      'Password minimum 6 characters'
-    )
-
-    return
-  }
-
-  const table =
-  document
-  .getElementById('sellerTable')
-
-  table.innerHTML += `
-
+async function loadSellers() {
+  const res = await fetch(`${API}/seller/by-superseller/${ssId}`)
+  const data = await res.json()
+  const tbody = document.getElementById('sellerTable')
+  if (!data.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No sellers created yet</td></tr>'; return }
+  tbody.innerHTML = data.map(s => `
     <tr>
-
-      <td>${name}</td>
-
-      <td>${email}</td>
-
+      <td>${s.name}</td>
+      <td>${s.email}</td>
+      <td><span class="badge ${s.status === 'active' ? 'badge-active' : 'badge-blocked'}">${s.status}</span></td>
       <td>
-
-        <span class="status">
-          Active
-        </span>
-
+        <button class="btn-warn" onclick="toggleSeller('${s._id}')">${s.status === 'active' ? 'Block' : 'Unblock'}</button>
+        <button class="btn-danger" onclick="deleteSeller('${s._id}')">Delete</button>
       </td>
-
-      <td>
-
-        <button
-          class="delete-btn"
-          onclick="deleteRow(this)"
-        >
-          Delete
-        </button>
-
-      </td>
-
     </tr>
-
-  `
-
-  document
-  .getElementById('sellerName')
-  .value=''
-
-  document
-  .getElementById('sellerEmail')
-  .value=''
-
-  document
-  .getElementById('sellerPassword')
-  .value=''
-
-  alert('Seller Created')
-
+  `).join('')
 }
 
-function deleteRow(button){
-
-  button
-  .parentElement
-  .parentElement
-  .remove()
-
+async function toggleSeller(id) {
+  await fetch(`${API}/seller/toggle/${id}`, { method: 'PUT' })
+  loadSellers()
 }
 
+async function deleteSeller(id) {
+  if (!confirm('Delete this seller?')) return
+  await fetch(`${API}/seller/${id}`, { method: 'DELETE' })
+  loadSellers()
+}
+
+async function loadBookings() {
+  const res = await fetch(`${API}/booking/by-superseller/${ssId}`)
+  const data = await res.json()
+  const tbody = document.getElementById('bookingTable')
+  if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No bookings yet</td></tr>'; return }
+  tbody.innerHTML = data.map(b => `
+    <tr>
+      <td>${b.userName}</td>
+      <td>${b.trainNumber}</td>
+      <td>${b.pnr}</td>
+      <td>₹${b.amount}</td>
+      <td>${b.sellerId?.name || '—'}</td>
+      <td>${new Date(b.createdAt).toLocaleDateString()}</td>
+    </tr>
+  `).join('')
+}
 </script>
-
 </body>
 </html>

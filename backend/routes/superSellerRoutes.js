@@ -1,0 +1,12 @@
+const express = require("express")
+const router = express.Router()
+const ctrl = require("../controllers/superSellerController")
+
+router.post("/create", ctrl.createSuperSeller)
+router.get("/", ctrl.getAllSuperSellers)
+router.delete("/:id", ctrl.deleteSuperSeller)
+router.put("/toggle/:id", ctrl.toggleSuperSeller)
+router.post("/login", ctrl.loginSuperSeller)
+router.get("/stats/:id", ctrl.getSuperSellerStats)
+
+module.exports = router
