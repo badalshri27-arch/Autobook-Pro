@@ -83,6 +83,18 @@ app.use("/api/license", licenseRoutes)
 app.use("/api/booking", bookingRoutes)
 app.use("/api/seller", sellerRoutes)
 app.use("/api/superseller", superSellerRoutes)
+// ======================
+// ADMIN FRONTEND COMPATIBILITY ROUTE
+// ======================
+
+app.post(
+  "/api/admin/add-credits",
+  (req, res, next) => {
+    req.url = "/credits/add"
+    next()
+  },
+  adminRoutes
+)
 
 // ======================
 // FRONTEND COMPATIBLE EXTRA ROUTES
